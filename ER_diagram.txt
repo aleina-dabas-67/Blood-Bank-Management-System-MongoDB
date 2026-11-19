@@ -1,0 +1,89 @@
+BLOOD BANK MANAGEMENT SYSTEM - ER DIAGRAM
+=========================================
+
+[DONOR] 1 ----< performs >---- M [DONATION]
+   |                                   |
+   |                                   | 1
+   |                                   |
+   | generates                         creates
+   |                                   |
+   M                                   M
+[BLOOD_UNIT] M ----< issued_for >---- 1 [BLOOD_REQUEST] M ----< raised_by >---- 1 [HOSPITAL]
+      |                                                                   
+      M                                                                   
+[ISSUE] M ----< handled_by >---- 1 [STAFF]
+
+ENTITIES AND ATTRIBUTES
+-----------------------
+
+DONOR
+- donor_id (Primary Key)
+- name
+- blood_group
+- date_of_birth
+- gender
+- phone
+- email
+- city
+- last_donation_date
+
+DONATION
+- donation_id (Primary Key)
+- donor_id (Foreign Key -> DONOR)
+- donation_date
+- quantity_ml
+- component
+- staff_id (Foreign Key -> STAFF)
+
+BLOOD_UNIT
+- unit_id (Primary Key)
+- donation_id (Foreign Key -> DONATION)
+- donor_id (Foreign Key -> DONOR)
+- blood_group
+- component
+- collection_date
+- expiry_date
+- status
+- storage_location
+
+HOSPITAL
+- hospital_id (Primary Key)
+- name
+- city
+- phone
+- address
+
+BLOOD_REQUEST
+- request_id (Primary Key)
+- hospital_id (Foreign Key -> HOSPITAL)
+- patient_name
+- blood_group
+- component
+- units_required
+- request_date
+- status
+
+ISSUE
+- issue_id (Primary Key)
+- request_id (Foreign Key -> BLOOD_REQUEST)
+- unit_id (Foreign Key -> BLOOD_UNIT)
+- hospital_id (Foreign Key -> HOSPITAL)
+- issue_date
+- issued_by (Foreign Key -> STAFF)
+
+STAFF
+- staff_id (Primary Key)
+- name
+- role
+- phone
+- email
+
+RELATIONSHIPS
+-------------
+
+1. One DONOR can perform many DONATIONS.                  [1:M]
+2. One DONATION of 450 ml creates one BLOOD_UNIT.          [1:M]
+3. One BLOOD_REQUEST can receive many BLOOD_UNITS.         [1:M]
+4. One HOSPITAL can raise many BLOOD_REQUESTS.             [1:M]
+5. One ISSUE links one BLOOD_UNIT to one BLOOD_REQUEST.    [M:1]
+6. One STAFF member can handle many DONATIONS or ISSUES.   [1:M]
